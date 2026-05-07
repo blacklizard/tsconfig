@@ -1,6 +1,6 @@
 {
   "name": "@blacklizard/tsconfig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Production-grade TypeScript 6 tsconfig presets for Node.js 24 and Vue 3 monorepos",
   "license": "MIT",
   "author": "blacklizard",
