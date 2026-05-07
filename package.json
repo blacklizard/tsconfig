@@ -1,0 +1,52 @@
+{
+  "name": "@blacklizard/tsconfig",
+  "version": "1.0.0",
+  "description": "Production-grade TypeScript 6 tsconfig presets for Node.js 24 and Vue 3 monorepos",
+  "license": "MIT",
+  "author": "blacklizard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blacklizard/tsconfig"
+  },
+  "homepage": "https://github.com/blacklizard/tsconfig#readme",
+  "bugs": {
+    "url": "https://github.com/blacklizard/tsconfig/issues"
+  },
+  "keywords": [
+    "typescript",
+    "tsconfig",
+    "node",
+    "vue",
+    "monorepo",
+    "esm",
+    "typescript-6"
+  ],
+  "bin": {
+    "create-tsconfig": "./bin/create-tsconfig.js"
+  },
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.node.json": "./tsconfig.node.json",
+    "./tsconfig.vue.json": "./tsconfig.vue.json"
+  },
+  "files": [
+    "bin/",
+    "tsconfig.base.json",
+    "tsconfig.node.json",
+    "tsconfig.vue.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@tsconfig/node24": "^24.0.0",
+    "@tsconfig/strictest": "^2.0.0",
+    "@vue/tsconfig": "^0.7.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=6.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
