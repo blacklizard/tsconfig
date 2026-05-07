@@ -22,6 +22,9 @@
     "esm",
     "typescript-6"
   ],
+  "scripts": {
+    "postversion": "git push --follow-tags origin main"
+  },
   "bin": {
     "create-tsconfig": "./bin/create-tsconfig.js"
   },
