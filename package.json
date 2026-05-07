@@ -2,6 +2,7 @@
   "name": "@blacklizard/tsconfig",
   "version": "1.0.1",
   "description": "Production-grade TypeScript 6 tsconfig presets for Node.js 24 and Vue 3 monorepos",
+  "type": "module",
   "license": "MIT",
   "author": "blacklizard",
   "repository": {
@@ -38,9 +39,11 @@
     "LICENSE"
   ],
   "dependencies": {
+    "@inquirer/prompts": "^7.0.0",
     "@tsconfig/node24": "^24.0.0",
     "@tsconfig/strictest": "^2.0.0",
-    "@vue/tsconfig": "^0.7.0"
+    "@vue/tsconfig": "^0.7.0",
+    "inquirer-file-selector": "^1.0.0"
   },
   "peerDependencies": {
     "typescript": ">=6.0.0"

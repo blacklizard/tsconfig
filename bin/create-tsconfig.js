@@ -1,24 +1,9 @@
 #!/usr/bin/env node
 
-import { createInterface } from "node:readline/promises";
-import { stdin, stdout } from "node:process";
+import { select, input, confirm } from "@inquirer/prompts";
+import { fileSelector } from "inquirer-file-selector";
 import { writeFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
-
-const rl = createInterface({ input: stdin, output: stdout });
-
-async function ask(question) {
-  return rl.question(question);
-}
-
-async function askYesNo(question) {
-  for (;;) {
-    const raw = (await ask(`${question} [y/n]: `)).trim().toLowerCase();
-    if (raw === "y" || raw === "yes") return true;
-    if (raw === "n" || raw === "no") return false;
-    console.log("  Please enter y or n.");
-  }
-}
+import { join } from "node:path";
 
 const PROJECT_TYPES = [
   { label: "Express / Node.js application",  id: "node-app"  },
@@ -28,17 +13,6 @@ const PROJECT_TYPES = [
   { label: "Node.js test config (vitest)",    id: "node-test" },
   { label: "Vue test config (vitest)",        id: "vue-test"  },
 ];
-
-async function selectProjectType() {
-  console.log("\nProject type:");
-  PROJECT_TYPES.forEach((t, i) => console.log(`  ${i + 1}. ${t.label}`));
-  for (;;) {
-    const raw = (await ask(`\nEnter number [1–${PROJECT_TYPES.length}]: `)).trim();
-    const n = parseInt(raw, 10);
-    if (n >= 1 && n <= PROJECT_TYPES.length) return PROJECT_TYPES[n - 1];
-    console.log(`  Please enter a number from 1 to ${PROJECT_TYPES.length}.`);
-  }
-}
 
 function buildConfig(projectId, useDecorators) {
   const isVue = projectId.startsWith("vue-");
@@ -129,12 +103,15 @@ async function main() {
   console.log("@blacklizard/tsconfig — project tsconfig generator");
   console.log("──────────────────────────────────────────────────");
 
-  const projectType = await selectProjectType();
-  console.log(`\n  Selected: ${projectType.label}`);
+  const projectTypeId = await select({
+    message: "Project type:",
+    choices: PROJECT_TYPES.map((t) => ({ name: t.label, value: t.id })),
+  });
 
-  const useDecorators = await askYesNo(
-    "\nUse reflect-metadata, class-transformer, TypeORM, NestJS, or similar decorator packages?"
-  );
+  const useDecorators = await confirm({
+    message: "Use reflect-metadata, class-transformer, TypeORM, NestJS, or similar decorator packages?",
+    default: true,
+  });
 
   if (useDecorators) {
     console.log(
@@ -144,28 +121,39 @@ async function main() {
     );
   }
 
-  const rawFile = (await ask("\nOutput filename [tsconfig.json]: ")).trim();
-  const outputFile = rawFile || "tsconfig.json";
+  const selected = await fileSelector({
+    message: "Select project root directory:",
+    type: "directory",
+    basePath: "./",
+  });
 
-  let shouldWrite = true;
+  const projectDir = selected.path;
+
+  const filename = await input({
+    message: "Output filename:",
+    default: "tsconfig.json",
+  });
+
+  const outputFile = join(projectDir, filename);
+
   if (existsSync(outputFile)) {
-    shouldWrite = await askYesNo(`\n${outputFile} already exists. Overwrite?`);
+    const overwrite = await confirm({
+      message: `${outputFile} already exists. Overwrite?`,
+      default: false,
+    });
+    if (!overwrite) {
+      console.log("\nExiting. No file written.");
+      process.exit(0);
+    }
   }
 
-  rl.close();
-
-  if (!shouldWrite) {
-    console.log("\nAborted. No file written.");
-    process.exit(0);
-  }
-
-  const config = buildConfig(projectType.id, useDecorators);
+  const config = buildConfig(projectTypeId, useDecorators);
   const content = JSON.stringify(config, null, 2) + "\n";
 
-  writeFileSync(resolve(outputFile), content, "utf8");
+  writeFileSync(outputFile, content, "utf8");
 
   console.log(`\nWrote: ${outputFile}`);
-  console.log(`Preset: ${projectType.label}`);
+  console.log(`Preset: ${PROJECT_TYPES.find((t) => t.id === projectTypeId).label}`);
 
   if (useDecorators) {
     console.log(
@@ -176,8 +164,8 @@ async function main() {
     );
   }
 
-  const isTest = projectType.id.endsWith("-test");
-  const isVue = projectType.id.startsWith("vue-");
+  const isTest = projectTypeId.endsWith("-test");
+  const isVue = projectTypeId.startsWith("vue-");
 
   if (!isTest) {
     const testPreset = isVue ? "Vue test config (vitest)" : "Node.js test config (vitest)";
