@@ -51,6 +51,7 @@ function buildConfig(projectId, useDecorators) {
     case "vue-lib":
       compilerOptions.rootDir = "./src";
       compilerOptions.outDir = "./dist";
+      compilerOptions.noEmit = false;
       compilerOptions.declaration = true;
       compilerOptions.declarationMap = true;
       compilerOptions.emitDeclarationOnly = true;

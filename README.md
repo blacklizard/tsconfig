@@ -14,21 +14,6 @@ Production-grade TypeScript 6 tsconfig presets for Node.js 24 and Vue 3 monorepo
 | TypeScript | `>=6.0.0` |
 | Node.js | `>=24.0.0` |
 
-## Known issues
-
-**`@vue/tsconfig` peer dep warning with TypeScript 6**
-
-`@vue/tsconfig` currently declares `typescript@5.x` as a peer dependency. With TypeScript 6
-installed, pnpm will emit a warning. This is safe to ignore — the tsconfig JSON itself is
-fully TypeScript 6 compatible. If your project enforces `strict-peer-dependencies`, add
-this to your `.npmrc`:
-
-```
-strict-peer-dependencies=false
-```
-
-This will be resolved once `@vue/tsconfig` updates their peer dependency range.
-
 ## Install
 
 ```sh
@@ -63,7 +48,7 @@ are added. See [Decorators](#decorators) below.
 |---|---|---|
 | `tsconfig.base.json` | — | Universal strict options only. Rarely extended directly. |
 | `tsconfig.node.json` | `@tsconfig/node24` + `@tsconfig/strictest` + base | Node.js apps, Express, Node libraries |
-| `tsconfig.vue.json` | `@vue/tsconfig/tsconfig.dom.json` + base | Vue 3 apps and component libraries |
+| `tsconfig.vue.json` | Vue/Vite DOM options + base | Vue 3 apps and component libraries |
 
 ---
 
@@ -154,6 +139,7 @@ which conflicts with `noEmit: true`.
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
+    "noEmit": false,
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,

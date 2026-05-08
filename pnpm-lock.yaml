@@ -17,9 +17,6 @@ importers:
       '@tsconfig/strictest':
         specifier: ^2.0.0
         version: 2.0.8
-      '@vue/tsconfig':
-        specifier: ^0.7.0
-        version: 0.7.0(typescript@6.0.3)
       inquirer-file-selector:
         specifier: ^1.0.0
         version: 1.0.1
@@ -168,17 +165,6 @@ packages:
 
   '@tsconfig/strictest@2.0.8':
     resolution: {integrity: sha512-XnQ7vNz5HRN0r88GYf1J9JJjqtZPiHt2woGJOo2dYqyHGGcd6OLGqSlBB6p1j9mpzja6Oe5BoPqWmeDx6X9rLw==}
-
-  '@vue/tsconfig@0.7.0':
-    resolution: {integrity: sha512-ku2uNz5MaZ9IerPPUyOHzyjhXoX2kVJaVf7hL315DC17vS6IiZRmmCPfggNbU16QTvM80+uYYy3eYJB59WCtvg==}
-    peerDependencies:
-      typescript: 5.x
-      vue: ^3.4.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-      vue:
-        optional: true
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -360,10 +346,6 @@ snapshots:
   '@tsconfig/node24@24.0.4': {}
 
   '@tsconfig/strictest@2.0.8': {}
-
-  '@vue/tsconfig@0.7.0(typescript@6.0.3)':
-    optionalDependencies:
-      typescript: 6.0.3
 
   ansi-regex@5.0.1: {}
 
